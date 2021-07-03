@@ -50,7 +50,7 @@ for(let i=0; i<minecraft_data_blocks.length; i++) {
 }
 if(changed) fs.writeFileSync('./node_modules/minecraft-data/minecraft-data/data/pc/1.8/blocks.json', JSON.stringify(minecraft_data_blocks, null, 4));
 
-const gg = require('griefergames');
+const gg = require('griefergames-bot');
 const dateFormat = require('dateformat');
 const prompt = require('serverline');
 
