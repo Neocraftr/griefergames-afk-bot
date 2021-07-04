@@ -176,17 +176,7 @@ async function startBot() {
         exit();
         break;
       default:
-        serverKickCounter++;
-        if(serverKickCounter < serverKickLimit) {
-          stopBot();
-          setTimeout(() => {
-            startBot();
-          }, 5000);
-        } else {
-          log('---------------------------------------------');
-          log('Server connect limit exceeded!');
-          exit();
-        }
+        handleKick(5000);
     }
   });
 
@@ -198,17 +188,7 @@ async function startBot() {
       return;
     }
 
-    serverKickCounter++;
-    if(serverKickCounter < serverKickLimit) {
-      stopBot();
-      setTimeout(() => {
-        startBot();
-      }, 5000);
-    } else {
-      log('---------------------------------------------');
-      log('Server connect limit exceeded!');
-      exit();
-    }
+    handleKick(5000);
   });
   
   // handle msg event
@@ -262,33 +242,14 @@ async function startBot() {
     // removes other than chat messages
     if(position == 2) return;
 
+    handleChatMessage(message);
+
     const delayRegex = message.toString().match(/^Der Server konnte deine Daten noch nicht verarbeiten\. Du wurdest für (\d{1,2}) Minuten gesperrt!$/);
     if(delayRegex != null) {
       const delay = parseInt(delayRegex[1]) + 2;
       log('Got blocked from CityBuild, reconnecting in '+delay+' minutes.');
-      stopBot();
-      setTimeout(() => {
-        startBot();
-      }, delay * 60000);
-      return;
+      handleKick(delay * 60000);
     }
-
-    // remove empty lines
-    if(message.toString().trim() == '') return;
-
-    // remove supreme newlines
-    if(message.toString().trim() == '»') return;
-
-    // remove broadcast messages
-    if(message.toString() == '------------ [ News ] ------------') {
-      broadcastMessage = !broadcastMessage;
-      return;
-    }
-    if(broadcastMessage) {
-      return;
-    }
-
-    log('[Chat] '+message.toAnsi(), config.displayChat);
   });
 
   bot.on('tpa', (rank, name) => {
@@ -351,6 +312,37 @@ async function startBot() {
       throw err;
     }
   });
+}
+
+function handleKick(reconnectDelay: number) {
+  stopBot();
+  serverKickCounter++;
+  if(serverKickCounter < serverKickLimit) {
+    setTimeout(() => {
+      startBot();
+    }, reconnectDelay);
+  } else {
+    log('---------------------------------------------');
+    log('Server connect limit exceeded!');
+    exit();
+  }
+}
+
+function handleChatMessage(message: any) {
+  // remove empty lines
+  if(message.toString().trim() == '') return;
+
+  // remove supreme newlines
+  if(message.toString().trim() == '»') return;
+
+  // remove broadcast messages
+  if(message.toString() == '------------ [ News ] ------------') {
+    broadcastMessage = !broadcastMessage;
+    return;
+  }
+  if(broadcastMessage) return;
+
+  log('[Chat] '+message.toAnsi(), config.displayChat);
 }
 
 function connectToCitybuild(citybuild: string) {
