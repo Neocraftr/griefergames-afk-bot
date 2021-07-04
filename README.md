@@ -1,12 +1,13 @@
 # griefergames-afk-bot
 
-Bot basierend auf meiner [griefergames-bot](https://github.com/Neocraftr/griefergames-bot) Bibliothek für den CityBuild Server GrieferGames.net. Vorallem auf AFK-Farming (z.B. an Spawnern) ausgelegt.
+Bot basierend auf meiner [griefergames-bot](https://github.com/Neocraftr/griefergames-bot) Bibliothek für den CityBuild Server GrieferGames.net. Vor allem auf AFK-Farming (z.B. an Spawnern) ausgelegt.
 
 ## Funktionen
-- Bukkit/Spigot ähnliches Konsoleninterface für Ingame und Bot Befahle
-- Auto reconnect
+- Bukkit/Spigot ähnliches Konsoleninterface für Ingame und Bot Befehle
+- Zuverlässiges AutoReconnect
+- Sicherheitslimits um Reports oder auffälliges Verhalten zu vermeiden
 - Chat und online Zeit logging
-- Automatisch auf Private Nachrichten antworten
+- Automatisch auf private Nachrichten antworten
 - Anzeige für erhaltenes Geld
 - Mehrere einstellbare Profile für verschiedene Aufgaben
 - Unterstützung für mehrere Accounts
@@ -36,7 +37,7 @@ node index.js
 ```
 
 ## Befehle
-Verfügbare Startoptionen können mit mit `node index.js --help` und verfügbare Konsolenbefehle mit `#help` aufgelistet werden.
+Verfügbare Startoptionen können mit `node index.js --help` und verfügbare Konsolenbefehle mit `#help` aufgelistet werden.
 
 ## Disclamer
-Die verwendung von Bots für das AFK-Farming oder CaseOpenings ist laut GrieferGames Regelwerk untersagt. Verwendung auf eigene Gefahr!
+Die Verwendung von Bots für das AFK-Farming oder CaseOpenings ist laut GrieferGames Regelwerk untersagt. Verwendung auf eigene Gefahr!
