@@ -65,6 +65,7 @@ let currentCityBuild = 'Offline';
 let serverKickCounter = 0;
 let onlineTime = 0;
 let income = 0;
+let broadcastMessage = false;
 
 let profile = argv.profile != null ? argv.profile : 'default';
 loadConfig();
@@ -257,10 +258,20 @@ async function startBot() {
   });
   
   // handle chat message event
-  let broadcastMessage = false;
   bot.on('message', (message, position) => {
     // removes other than chat messages
     if(position == 2) return;
+
+    const delayRegex = message.toString().match(/^Der Server konnte deine Daten noch nicht verarbeiten\. Du wurdest für (\d{1,2}) Minuten gesperrt!$/);
+    if(delayRegex != null) {
+      const delay = parseInt(delayRegex[1]) + 2;
+      log('Got blocked from CityBuild, reconnecting in '+delay+' minutes.');
+      stopBot();
+      setTimeout(() => {
+        startBot();
+      }, delay * 60000);
+      return;
+    }
 
     // remove empty lines
     if(message.toString().trim() == '') return;
@@ -365,6 +376,7 @@ function stopBot() {
     bot = null;
   }
   connectingToCityBuild = false;
+  broadcastMessage = false;
   currentCityBuild = 'Offline';
   clearInterval(onlineTimeInterval);
 }
