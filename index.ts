@@ -76,15 +76,14 @@ if(config.logMessages) {
   if(!fs.existsSync('logs/')) {
     fs.mkdirSync('logs/');
   }
-  if(fs.existsSync(`logs/${dateFormat('dd-mm-yyyy')}.log`)) {
-    let counter = 1;
-    while(fs.existsSync(`logs/${dateFormat('dd-mm-yyyy')}-${counter}.log`)) {
-      counter++;
-    }
-    logFile = fs.openSync(`logs/${dateFormat('dd-mm-yyyy')}-${counter}.log`, 'a');
-  } else {
-    logFile = fs.openSync(`logs/${dateFormat('dd-mm-yyyy')}.log`, 'a');
+
+  let logFileName = `logs/${dateFormat('dd-mm-yyyy')}-${config.account}.log`;
+  let counter = 0;
+  while(fs.existsSync(logFileName)) {
+    counter++;
+    logFileName = `logs/${dateFormat('dd-mm-yyyy')}-${config.account}-${counter}.log`;
   }
+  logFile = fs.openSync(logFileName, 'a');
 }
 
 async function startBot() {
@@ -408,7 +407,7 @@ function loadCredentials() {
 if(credentials.authType == 'mcleaks') {
   log('Please create an token on https://mcleaks.net/get and enter it here.');
 } else {
-  startBot();
+  //startBot();
 }
 
 // command prompt
