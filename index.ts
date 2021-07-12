@@ -407,7 +407,7 @@ function loadCredentials() {
 if(credentials.authType == 'mcleaks') {
   log('Please create an token on https://mcleaks.net/get and enter it here.');
 } else {
-  //startBot();
+  startBot();
 }
 
 // command prompt
